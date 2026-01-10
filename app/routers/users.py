@@ -24,7 +24,7 @@ async def login_for_access_token(form_data:OAuth2PasswordRequestForm=Depends(), 
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/register_user")
-async def add_user(request: User, db: Session = Depends(get_db), dependencies=Depends(PermissionChecker(["admin"]))):
+async def add_user(request: User, db: Session = Depends(get_db), user_data=Depends(PermissionChecker(["admin"]))):
     user = user_model.User(
         id=request.id,
         name=request.name,

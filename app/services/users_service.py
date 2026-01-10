@@ -54,5 +54,6 @@ class PermissionChecker:
                         status_code=status.HTTP_403_FORBIDDEN,
                         detail=f"Permission '{perm}' is required"
                     )
+            return payload
         except ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token has expired")
