@@ -13,15 +13,18 @@ import os
 # Load the environment variable from the .env file
 load_dotenv()
 
-SECRET_KEY = {os.getenv('JWT_SECRET_KEY')}
-ALGORITHM = {os.getenv('JWT_ALGORITHM')}
-ACCESS_TOKEN_EXPIRE_MINUTES = {os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')}
+SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+ALGORITHM = os.getenv('JWT_ALGORITHM')
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 def get_user(db: Session, username: str):
     return db.query(User).filter(User.email == username).first()
+
+def get_all_users(db:Session):
+    return db.query(User.id).all()
 
 def verify_password(password, hashed_password):
     return pwd_context.verify(password, hashed_password)
