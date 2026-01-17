@@ -11,7 +11,7 @@ router = APIRouter(tags=["User Management"])
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-@router.post("/login", response_model=Token)
+@router.post("/user-login", response_model=Token)
 async def login_for_access_token(form_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -23,7 +23,7 @@ async def login_for_access_token(form_data:OAuth2PasswordRequestForm=Depends(), 
     access_token = create_access_token(data={"sub": user.email, "role":user.role})
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.post("/register_user")
+@router.post("/user-registration")
 async def add_user(request: User, db: Session = Depends(get_db), user_data=Depends(PermissionChecker(["admin"]))):
     user = user_model.User(
         id=request.id,

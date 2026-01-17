@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from routers import users
 import uvicorn
 # Create a FastAPI app instance

@@ -7,10 +7,15 @@ from models.user_model import User
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
 from typing import List
+from dotenv import load_dotenv
+import os
 
-SECRET_KEY = "eliasKey"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+# Load the environment variable from the .env file
+load_dotenv()
+
+SECRET_KEY = {os.getenv('JWT_SECRET_KEY')}
+ALGORITHM = {os.getenv('JWT_ALGORITHM')}
+ACCESS_TOKEN_EXPIRE_MINUTES = {os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')}
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
