@@ -1,7 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from database import get_db
 from jose import jwt, ExpiredSignatureError
 from models.user_model import User
 from passlib.context import CryptContext
