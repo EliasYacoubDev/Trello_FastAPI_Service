@@ -46,8 +46,7 @@ def create_access_token(data:dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp":expire})
     enocded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return enocded_jwt
-
-
+            
 class PermissionChecker:
     def __init__(self, required_permissions: List[str]) -> None:
         self.required_permissions = required_permissions
@@ -63,5 +62,13 @@ class PermissionChecker:
                         detail=f"Permission '{perm}' is required"
                     )
             return payload
+        except ExpiredSignatureError:
+            raise HTTPException(status_code=401, detail="Token has expired")
+        
+    def verify_user_id(token: str = Depends(oauth2_scheme)):
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+            user_id = payload.get("id", [])
+            return user_id
         except ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token has expired")
